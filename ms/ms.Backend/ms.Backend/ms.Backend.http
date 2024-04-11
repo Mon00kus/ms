@@ -1,6 +1,6 @@
 @ms.Backend_HostAddress = http://localhost:5182
 
-GET {{ms.Backend_HostAddress}}/weatherforecast/
+# GET {{ms.Backend_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

@@ -1,6 +1,6 @@
 ﻿namespace ms.Backend.Domain.Models
 {
-    public class ValidCardResponse
+    public class ValidCard
     {
         public string card { get; set; }
         public bool isValid { get; set; }

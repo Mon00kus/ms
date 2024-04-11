@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ms.Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,17 +17,29 @@ namespace ms.Backend.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Firtname = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    Lastname = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    Documnet_type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Documnet = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Serial_tullave = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
+                    Firtsname = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Lastname = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Document_type = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Document = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Serial_tullave = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Saldo = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_Lastname",
+                table: "Usuarios",
+                column: "Lastname",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_Serial_tullave",
+                table: "Usuarios",
+                column: "Serial_tullave",
+                unique: true);
         }
 
         /// <inheritdoc />

@@ -11,8 +11,8 @@ using ms.Backend.Data;
 namespace ms.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240410004449_Inicial")]
-    partial class Inicial
+    [Migration("20240410125004_Cambio_nombre_columna_document_type_a_documentType")]
+    partial class Cambio_nombre_columna_document_type_a_documentType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,35 +32,41 @@ namespace ms.Backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Documnet")
+                    b.Property<string>("Document")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("Documnet_type")
+                    b.Property<string>("DocumentType")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<string>("Firtname")
+                    b.Property<string>("Firtsname")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Lastname")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<decimal>("Saldo")
                         .HasColumnType("numeric");
 
                     b.Property<string>("Serial_tullave")
                         .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("character varying(16)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Lastname")
+                        .IsUnique();
+
+                    b.HasIndex("Serial_tullave")
+                        .IsUnique();
 
                     b.ToTable("Usuarios");
                 });

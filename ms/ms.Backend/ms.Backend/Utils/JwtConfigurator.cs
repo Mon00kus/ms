@@ -2,5 +2,9 @@
 {
     public class JwtConfigurator
     {
+        public static string GetToken()
+        {
+            return "Token";
+        }
     }
 }
