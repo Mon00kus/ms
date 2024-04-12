@@ -25,7 +25,7 @@ namespace ms.Backend.Persistence.Repositories
 
         public async Task<CardBalance> CardBalanceAsync(string card)
         {
-            var tokenTuLlave = _configuration["Jwt_bearer:TokenTullave"];
+            var tokenTuLlave = _configuration["JwtBearer:TokenTullave"];
             var endPointTuLlave = _configuration["EndsTuLlave:CardBalance"];
             CardBalance CardBalanceResponse = new CardBalance();
 
@@ -47,7 +47,7 @@ namespace ms.Backend.Persistence.Repositories
 
         public async Task<CardInformation> CardInformationAsync(string card)
         {
-            var tokenTuLlave = _configuration["Jwt_bearer:TokenTullave"];
+            var tokenTuLlave = _configuration["JwtBearer:TokenTullave"];
             var endPointTuLlave = _configuration["EndsTuLlave:CardInformation"];
             CardInformation CardInformationResponse = new CardInformation();
 
@@ -69,7 +69,7 @@ namespace ms.Backend.Persistence.Repositories
  
         public async Task<bool> IsValidCardAsync(string card)
         {      
-            var tokenTuLlave = _configuration["Jwt_bearer:TokenTullave"];
+            var tokenTuLlave = _configuration["JwtBearer:TokenTullave"];
             var endPointTuLlave = _configuration["EndsTuLlave:ValidCard"];
             
             using (var httpClient = new HttpClient())

@@ -1,4 +1,4 @@
-﻿namespace ms.Backend.Utils
+﻿namespace ms.Backend.Helpers
 {
     public class Encriptar
     {
