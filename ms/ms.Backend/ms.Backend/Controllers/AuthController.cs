@@ -16,7 +16,7 @@ namespace ms.Backend.Controllers
             _config = configuration;
         }
 
-        [HttpPost("Token")]
+        [HttpPost("getToken")]
         public IActionResult Login([FromBody] UserLogin user)
         {            
             try
