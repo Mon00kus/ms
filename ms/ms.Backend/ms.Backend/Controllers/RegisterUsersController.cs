@@ -71,17 +71,18 @@ namespace ms.Backend.Controllers
                 string.IsNullOrEmpty(usuario.Firtsname) ||
                 string.IsNullOrEmpty(usuario.Lastname) ||
                 string.IsNullOrEmpty(usuario.DocumentType) ||
-                string.IsNullOrEmpty(usuario.Document) ||
-                usuario.Saldo == 0
+                string.IsNullOrEmpty(usuario.Document) 
+                //|| usuario.Saldo == 0
                )
             {
                 return BadRequest("Debe completar la información de todos los campos !!!");
             }
 
             var isValidTuLlave = await _registerUserService.IsValidCardAsync(usuario.Serial_tullave);
-
+            var cardbalance = await _registerUserService.CardBalanceAsync(usuario.Serial_tullave);
             if (isValidTuLlave)
             {
+                usuario.Saldo = cardbalance.balance;
                 resultMessage = await _registerUserService.RegisterUserAsync(usuario);
             }
             else
@@ -97,8 +98,7 @@ namespace ms.Backend.Controllers
                 }
                 return BadRequest(resultMessage);
             }
-
-            var cardbalance = await _registerUserService.CardBalanceAsync(usuario.Serial_tullave);
+            
             var cardInformation = await _registerUserService.CardInformationAsync(usuario.Serial_tullave);
             var nombreCompleto =
                 string.IsNullOrEmpty(cardInformation.userName) ? "Sin Nombre " : cardInformation.userName;
