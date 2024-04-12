@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -68,19 +70,40 @@ builder.Services.AddScoped<IRegisterUserRepository, RegisterUserRepository>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7124/") });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
- .AddJwtBearer(options =>
-    options.TokenValidationParameters = new TokenValidationParameters
-    {            
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = configuration["JwtBearer:Issuer"],
-        ValidAudience = configuration["JwtBearer:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtBearer:SecretKey"]!)),
-        ClockSkew = TimeSpan.Zero
-    }
-  );
+    .AddJwtBearer(options =>
+    {
+        // Establece los parámetros de validación del token
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = configuration["JwtBearer:Issuer"],
+            ValidAudience = configuration["JwtBearer:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtBearer:SecretKey"]!)),
+            ClockSkew = TimeSpan.Zero
+        };
+
+        // Configura los eventos de JwtBearer para personalizar la respuesta en desafíos
+        options.Events = new JwtBearerEvents
+        {
+            OnChallenge = context =>
+            {
+                // Evita el envío del header WWW-Authenticate
+                context.HandleResponse();
+
+                // Personaliza la respuesta
+                context.Response.StatusCode = 401;
+                context.Response.ContentType = "application/json";
+
+                // Escribe el contenido de la respuesta JSON personalizada
+                var result = JsonSerializer.Serialize(new { error = "Usted no está autorizado para acceder a este recurso." });
+                return context.Response.WriteAsync(result);
+            }
+        };
+    });
+
 
 var app = builder.Build();
 
