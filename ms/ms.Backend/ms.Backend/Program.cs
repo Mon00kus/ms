@@ -148,7 +148,7 @@ if (app.Environment.IsDevelopment())
                 ValidateAudience = true,
                 ValidAudience = _audience, // La audiencia del token
                 ValidateLifetime = true, // Valida la expiración
-                ClockSkew = TimeSpan.Zero // La tolerancia de tiempo para la expiración del token
+                ClockSkew = TimeSpan.FromDays(1) // La tolerancia de tiempo para la expiración del token
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
